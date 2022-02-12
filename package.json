@@ -14,6 +14,7 @@
     "url": "git+https://github.com/Herman2201/backend-project-lvl2.git"
   },
   "author": "Herman",
+  "type": "module",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Herman2201/backend-project-lvl2/issues"
@@ -21,6 +22,8 @@
   "homepage": "https://github.com/Herman2201/backend-project-lvl2#readme",
   "dependencies": {
     "commander": "^9.0.0",
-    "inquirer": "^8.2.0"
+    "fs": "0.0.1-security",
+    "inquirer": "^8.2.0",
+    "lodash": "^4.17.21"
   }
 }
