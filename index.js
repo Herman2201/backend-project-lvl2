@@ -1,4 +1,6 @@
-import { readTree } from '../src/utils.js';
+// @ts-check
+
+import { readTree } from '../backend-project-lvl2/src/utils.js';
 import _ from 'lodash';
 
 const jsonString = (obj) => {
@@ -58,4 +60,5 @@ const genDiff = (file1, file2, type) => {
   const diffObj = diff(dataFile1, dataFile2);
   return jsonString(diffObj);
 };
+
 export default genDiff;

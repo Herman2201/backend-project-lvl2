@@ -4,14 +4,19 @@
   "description": "project",
   "main": "index.js",
   "bin": {
-    "gendiff": "bin/gendiff.js"
+    "gendiff": "bin/genDiff.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx jest --bail",
+    "test-win": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest --bail"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Herman2201/backend-project-lvl2.git"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {}
   },
   "author": "Herman",
   "type": "module",
@@ -27,6 +32,9 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "eslint": "^8.9.0"
+    "@jest/globals": "^27.5.1",
+    "eslint": "^8.9.0",
+    "jest": "^27.5.1",
+    "jest-cli": "^27.5.1"
   }
 }
