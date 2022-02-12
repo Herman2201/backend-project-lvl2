@@ -55,6 +55,9 @@ const diff = (file1, file2) => {
 };
 
 const genDiff = (file1, file2, type) => {
+  if (type){
+    return 1;
+  }
   const dataFile1 = JSON.parse(readTree(file1));
   const dataFile2 = JSON.parse(readTree(file2));
   const diffObj = diff(dataFile1, dataFile2);
