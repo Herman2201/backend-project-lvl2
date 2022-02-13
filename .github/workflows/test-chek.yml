@@ -48,4 +48,4 @@ jobs:
           TEST_COVARAGE_ID: ${{ secrets.TEST_COVARAGE_ID }}
         with:
           coverageCommand: make test-coverage
-          debug: true
+          # debug: true
