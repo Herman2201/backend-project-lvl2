@@ -7,5 +7,5 @@ const filepath2 = 'file2.json';
 const expectJson = readFile('expectJson.txt');
 
 test('amogus', () => {
-  expect(genDiff(filepath1, filepath2)).toBe(expectJson);
+  expect(genDiff(filepath1, filepath2, { format: 'json' })).toBe(expectJson);
 });
