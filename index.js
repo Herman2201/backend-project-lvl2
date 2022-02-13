@@ -55,10 +55,13 @@ const diff = (file1, file2) => {
 };
 
 const genDiff = (file1, file2, type) => {
-  const dataFile1 = JSON.parse(readFile(file1));
-  const dataFile2 = JSON.parse(readFile(file2));
-  const diffObj = diff(dataFile1, dataFile2);
-  return jsonString(diffObj);
+  if (type.format === 'json') {
+    const dataFile1 = JSON.parse(readFile(file1));
+    const dataFile2 = JSON.parse(readFile(file2));
+    const diffObj = diff(dataFile1, dataFile2);
+    return jsonString(diffObj);
+  }
+  return 'errore';
 };
 
 export default genDiff;
