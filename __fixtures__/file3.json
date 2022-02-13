@@ -1,0 +1,8 @@
+{
+    "host": "hexlet.io",
+    "timeout": 50,
+    "proxy": "123.234.53.22",
+    "follow": false,
+    "users": "150",
+    "password": "32049572819384"
+}
