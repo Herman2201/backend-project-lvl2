@@ -1,7 +1,7 @@
 // @ts-check
 
-import readFile from './src/utils.js';
-import _ from 'lodash';
+import parseFileData from './src/parsers.js';
+import diff from './src/diff.js';
 
 const jsonString = (obj) => {
   const a = obj.map((key) => {
@@ -19,49 +19,10 @@ const jsonString = (obj) => {
   return `{ \n${a.join('\n')} \n}`;
 };
 
-const diff = (file1, file2) => {
-  const keys = _.union(_.keys(file1), _.keys(file2));
-  const sortKey = keys.sort();
-  const diffKey = sortKey.map((key) => {
-    if (!_.has(file1, key)) {
-      return {
-        exist: '+',
-        key,
-        value: file2[key],
-      };
-    }
-    if (!_.has(file2, key)) {
-      return {
-        exist: '-',
-        key,
-        value: file1[key],
-      };
-    }
-    if (!_.isEqual(file1[key], file2[key])) {
-      return {
-        exist: ['-', '+'],
-        key,
-        value: [file1[key], file2[key]],
-      };
-    }
-    return {
-      exist: '   ',
-      key,
-      value: file1[key],
-    };
-  });
-
-  return diffKey;
-};
-
-const genDiff = (file1, file2, type) => {
-  if (type.format === 'json') {
-    const dataFile1 = JSON.parse(readFile(file1));
-    const dataFile2 = JSON.parse(readFile(file2));
-    const diffObj = diff(dataFile1, dataFile2);
-    return jsonString(diffObj);
-  }
-  return 'errore';
+const genDiff = (file1, file2) => {
+  const dataFile1 = parseFileData(file1);
+  const dataFile2 = parseFileData(file2);
+  return jsonString(diff(dataFile1, dataFile2));
 };
 
 export default genDiff;

@@ -9,8 +9,8 @@ program
   .argument('<filepath1>')
   .argument('<filepath2>')
   .option('-f, --format <type>', 'output format')
-  .action((filepath1, filepath2, type) => {
-    const result = genDiff(filepath1, filepath2, type);
+  .action((filepath1, filepath2) => {
+    const result = genDiff(filepath1, filepath2);
     console.log(result);
   })
   .parse(process.argv);
