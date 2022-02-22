@@ -1,7 +1,0 @@
-{
-    "timeout": 20,
-    "verbose": true,
-    "host": "hexlet.io",
-    "online": true,
-    "port": "255.255.255"
-}

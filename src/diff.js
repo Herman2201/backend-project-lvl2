@@ -18,6 +18,12 @@ const diff = (file1, file2) => {
         value: file1[key],
       };
     }
+    if (_.isObject(file1[key]) && _.isObject(file2[key])) {
+      return {
+        parent: key,
+        children: diff(file1[key], file2[key]),
+      };
+    }
     if (!_.isEqual(file1[key], file2[key])) {
       return {
         exist: ['-', '+'],
@@ -25,13 +31,13 @@ const diff = (file1, file2) => {
         value: [file1[key], file2[key]],
       };
     }
+
     return {
-      exist: '   ',
+      exist: ' ',
       key,
       value: file1[key],
     };
   });
-
   return diffKey;
 };
 
