@@ -24,6 +24,6 @@ test('diff file1.yml, file1.yml', () => {
   expect(genDiff(fileYml1, fileYml2)).toBe(expecti);
 });
 
-test('test error', () => {
+test('throw error', () => {
   expect(() => genDiff(fileJson3, fileJson4)).toThrow();
-})
+});
