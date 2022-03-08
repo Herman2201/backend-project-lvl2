@@ -12,11 +12,9 @@ const getChildren = (children, depth = 0) => {
   }
   const keys = _.union(_.keys(children));
   const sortKey = keys.sort();
-  const result = sortKey.map((value) =>
-    !_.isObject(children[value])
-      ? `${childrentIndent}${value}: ${children[value]}`
-      : `${childrentIndent}${value}: ${getChildren(children[value], depth + 1)}`
-  );
+  const result = sortKey.map((value) => (!_.isObject(children[value])
+    ? `${childrentIndent}${value}: ${children[value]}`
+    : `${childrentIndent}${value}: ${getChildren(children[value], depth + 1)}`));
   return ['{', ...result, `${bracketIndent}}`].join('\n');
 };
 
@@ -32,21 +30,21 @@ const treeToString = (obj) => {
       if (Object.prototype.hasOwnProperty.call(key, 'children')) {
         return `${currentIndent}${key.parent}: ${iter(
           key.children,
-          depth + 1
+          depth + 1,
         )}`;
       }
       if (key.changeDel && key.changeAdd) {
         return `${childrentIndent}${key.changeDel} ${key.key}: ${getChildren(
           key.valueFile1,
-          depth
+          depth,
         )}\n${childrentIndent}${key.changeAdd} ${key.key}: ${getChildren(
           key.valueFile2,
-          depth
+          depth,
         )}`;
       }
       return `${childrentIndent}${getExpected(key)} ${key.key}: ${getChildren(
         key.value,
-        depth
+        depth,
       )}`;
     });
 

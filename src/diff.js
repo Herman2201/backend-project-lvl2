@@ -28,8 +28,8 @@ const formationsDiff = (value, exist, key) => {
         key,
         value,
       };
-    // default:
-    //   throw new Error(`Invalid this exist ${exist}`);
+    default:
+      throw new Error(`Invalid this exist ${exist}`);
   }
 };
 
