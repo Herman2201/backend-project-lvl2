@@ -1,6 +1,7 @@
 import _ from 'lodash';
+import { getExpected } from './utils.js';
 
-const getChildren = (children, depth) => {
+const getChildren = (children, depth = 0) => {
   const space = ' ';
   const indentSize = depth * 4;
   const childrentIndent = space.repeat(indentSize + 4);
@@ -11,14 +12,16 @@ const getChildren = (children, depth) => {
   }
   const keys = _.union(_.keys(children));
   const sortKey = keys.sort();
-  const result = sortKey.map((value) => (!_.isObject(children[value])
-    ? `${childrentIndent}${value}: ${children[value]}`
-    : `${childrentIndent}${value}: ${getChildren(children[value], depth + 1)}`));
+  const result = sortKey.map((value) =>
+    !_.isObject(children[value])
+      ? `${childrentIndent}${value}: ${children[value]}`
+      : `${childrentIndent}${value}: ${getChildren(children[value], depth + 1)}`
+  );
   return ['{', ...result, `${bracketIndent}}`].join('\n');
 };
 
 const treeToString = (obj) => {
-  const iter = (currentValue, depth) => {
+  const iter = (currentValue, depth = 0) => {
     const space = ' ';
     const indentSize = depth * 4;
     const currentIndent = space.repeat(indentSize);
@@ -29,33 +32,21 @@ const treeToString = (obj) => {
       if (Object.prototype.hasOwnProperty.call(key, 'children')) {
         return `${currentIndent}${key.parent}: ${iter(
           key.children,
-          depth + 1,
+          depth + 1
         )}`;
       }
-      if (Array.isArray(key.exist)) {
-        return `${childrentIndent}${key.exist[0]} ${key.key}: ${getChildren(
-          key.value[0],
-          depth,
-        )}\n${childrentIndent}${key.exist[1]} ${key.key}: ${getChildren(
-          key.value[1],
-          depth,
+      if (key.changeDel && key.changeAdd) {
+        return `${childrentIndent}${key.changeDel} ${key.key}: ${getChildren(
+          key.valueFile1,
+          depth
+        )}\n${childrentIndent}${key.changeAdd} ${key.key}: ${getChildren(
+          key.valueFile2,
+          depth
         )}`;
       }
-      if (key.exist === '-') {
-        return `${childrentIndent}${key.exist} ${key.key}: ${getChildren(
-          key.value,
-          depth,
-        )}`;
-      }
-      if (key.exist === '+') {
-        return `${childrentIndent}${key.exist} ${key.key}: ${getChildren(
-          key.value,
-          depth,
-        )}`;
-      }
-      return `${childrentIndent}${key.exist} ${key.key}: ${getChildren(
+      return `${childrentIndent}${getExpected(key)} ${key.key}: ${getChildren(
         key.value,
-        depth,
+        depth
       )}`;
     });
 

@@ -1,6 +1,6 @@
 import { test, expect } from '@jest/globals';
 import genDiff from '../index.js';
-import readFile from '../src/utils.js';
+import {readFile} from '../src/utils.js';
 
 const fileJson1 = 'file1.json';
 const fileJson2 = 'file2.json';
