@@ -1,44 +1,48 @@
 import _ from 'lodash';
 import { getExpected } from './utils.js';
 
-const getChildren = (children, depth = 0) => {
+const getIndentSize = (depth, node = 'parent') => {
   const space = ' ';
   const indentSize = depth * 4;
-  const childrentIndent = space.repeat(indentSize + 4);
-  const bracketIndent = space.repeat(indentSize);
+  if (node === 'parent') {
+    return [
+      space.repeat(indentSize),
+      space.repeat(indentSize - 2),
+      space.repeat(indentSize - 4),
+    ];
+  }
+  return [space.repeat(indentSize + 4), space.repeat(indentSize)];
+};
 
+const getChildren = (children, depth = 0) => {
   if (!_.isObject(children)) {
     return `${children}`;
   }
+  const [childrentIndent, bracketIndent] = getIndentSize(depth, 'children');
   const keys = _.union(_.keys(children));
   const sortKey = keys.sort();
-  const result = sortKey.map((value) => (!_.isObject(children[value])
+  const line = sortKey.map((value) => (!_.isObject(children[value])
     ? `${childrentIndent}${value}: ${children[value]}`
     : `${childrentIndent}${value}: ${getChildren(children[value], depth + 1)}`));
-  return ['{', ...result, `${bracketIndent}}`].join('\n');
+  return ['{', ...line, `${bracketIndent}}`].join('\n');
 };
 
 const treeToString = (obj) => {
   const iter = (currentValue, depth = 0) => {
-    const space = ' ';
-    const indentSize = depth * 4;
-    const currentIndent = space.repeat(indentSize);
-    const childrentIndent = space.repeat(indentSize - 2);
-    const bracketIndent = space.repeat(indentSize - 4);
-
-    const lines = currentValue.map((key) => {
+    const [currentIndent, childrentIndent, bracketIndent] = getIndentSize(depth);
+    const line = currentValue.map((key) => {
       if (Object.prototype.hasOwnProperty.call(key, 'children')) {
         return `${currentIndent}${key.parent}: ${iter(
           key.children,
           depth + 1,
         )}`;
       }
-      if (key.changeDel && key.changeAdd) {
-        return `${childrentIndent}${key.changeDel} ${key.key}: ${getChildren(
-          key.valueFile1,
+      if (key.del && key.add) {
+        return `${childrentIndent}${key.del} ${key.key}: ${getChildren(
+          key.value1,
           depth,
-        )}\n${childrentIndent}${key.changeAdd} ${key.key}: ${getChildren(
-          key.valueFile2,
+        )}\n${childrentIndent}${key.add} ${key.key}: ${getChildren(
+          key.value2,
           depth,
         )}`;
       }
@@ -47,8 +51,7 @@ const treeToString = (obj) => {
         depth,
       )}`;
     });
-
-    return ['{', ...lines, `${bracketIndent}}`].join('\n');
+    return ['{', ...line, `${bracketIndent}}`].join('\n');
   };
 
   return iter(obj, 1);

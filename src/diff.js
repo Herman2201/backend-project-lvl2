@@ -16,11 +16,11 @@ const formationsDiff = (value, exist, key) => {
       };
     case 'change':
       return {
-        changeDel: '-',
-        changeAdd: '+',
+        del: '-',
+        add: '+',
         key,
-        valueFile1: value[0],
-        valueFile2: value[1],
+        value1: value[0],
+        value2: value[1],
       };
     case 'notChange':
       return {
@@ -33,28 +33,27 @@ const formationsDiff = (value, exist, key) => {
   }
 };
 
-const diff = (file1, file2) => {
-  const keys = _.union(_.keys(file1), _.keys(file2));
+const diff = (tree1, tree2) => {
+  const keys = _.union(_.keys(tree1), _.keys(tree2));
   const sortKey = keys.sort();
   const diffKey = sortKey.map((key) => {
-    if (!_.has(file1, key)) {
-      return formationsDiff(file2[key], 'add', key);
+    if (!_.has(tree1, key)) {
+      return formationsDiff(tree2[key], 'add', key);
     }
-    if (!_.has(file2, key)) {
-      return formationsDiff(file1[key], 'delete', key);
+    if (!_.has(tree2, key)) {
+      return formationsDiff(tree1[key], 'delete', key);
     }
-    if (_.isObject(file1[key]) && _.isObject(file2[key])) {
+    if (_.isObject(tree1[key]) && _.isObject(tree2[key])) {
       return {
         parent: key,
-        children: diff(file1[key], file2[key]),
+        children: diff(tree1[key], tree2[key]),
       };
     }
-    if (!_.isEqual(file1[key], file2[key])) {
-      return formationsDiff([file1[key], file2[key]], 'change', key);
+    if (!_.isEqual(tree1[key], tree2[key])) {
+      return formationsDiff([tree1[key], tree2[key]], 'change', key);
     }
-    return formationsDiff(file1[key], 'notChange', key);
+    return formationsDiff(tree1[key], 'notChange', key);
   });
-  console.log(diffKey);
   return diffKey;
 };
 
