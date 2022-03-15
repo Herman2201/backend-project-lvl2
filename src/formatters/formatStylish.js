@@ -21,33 +21,30 @@ const getChildren = (children, depth = 0) => {
   const [childrentIndent, bracketIndent] = getIndentSize(depth, 'children');
   const keys = _.union(_.keys(children));
   const sortKey = keys.sort();
-  const line = sortKey.map((value) =>
-    !_.isObject(children[value])
-      ? `${childrentIndent}${value}: ${children[value]}`
-      : `${childrentIndent}${value}: ${getChildren(children[value], depth + 1)}`
-  );
+  const line = sortKey.map((value) => (!_.isObject(children[value])
+    ? `${childrentIndent}${value}: ${children[value]}`
+    : `${childrentIndent}${value}: ${getChildren(children[value], depth + 1)}`));
   return ['{', ...line, `${bracketIndent}}`].join('\n');
 };
 
 const formatStylish = (obj) => {
   const iter = (currentValue, depth = 0) => {
-    const [currentIndent, childrentIndent, bracketIndent] =
-      getIndentSize(depth);
+    const [currentIndent, childrentIndent, bracketIndent] = getIndentSize(depth);
     const line = currentValue.map((key) => {
       switch (key.status) {
         case 'heir': {
           return `${currentIndent}${key.parent}: ${iter(
             key.children,
-            depth + 1
+            depth + 1,
           )}`;
         }
         case 'replacement': {
           return `${childrentIndent}${key.del} ${key.key}: ${getChildren(
             key.value1,
-            depth
+            depth,
           )}\n${childrentIndent}${key.add} ${key.key}: ${getChildren(
             key.value2,
-            depth
+            depth,
           )}`;
         }
         case 'notChange':
