@@ -4,18 +4,21 @@ const formationsDiff = (value, exist, key) => {
   switch (exist) {
     case 'add':
       return {
+        status: exist,
         add: '+',
         key,
         value,
       };
     case 'delete':
       return {
+        status: exist,
         del: '-',
         key,
         value,
       };
-    case 'change':
+    case 'replacement':
       return {
+        status: exist,
         del: '-',
         add: '+',
         key,
@@ -24,6 +27,7 @@ const formationsDiff = (value, exist, key) => {
       };
     case 'notChange':
       return {
+        status: exist,
         notChange: ' ',
         key,
         value,
@@ -45,12 +49,13 @@ const diff = (tree1, tree2) => {
     }
     if (_.isObject(tree1[key]) && _.isObject(tree2[key])) {
       return {
+        status: 'heir',
         parent: key,
         children: diff(tree1[key], tree2[key]),
       };
     }
     if (!_.isEqual(tree1[key], tree2[key])) {
-      return formationsDiff([tree1[key], tree2[key]], 'change', key);
+      return formationsDiff([tree1[key], tree2[key]], 'replacement', key);
     }
     return formationsDiff(tree1[key], 'notChange', key);
   });
