@@ -11,7 +11,7 @@ program
   .option(
     '-f, --format <type>',
     'output format [stylish, plain, json]',
-    'stylish'
+    'stylish',
   )
   .action((filepath1, filepath2, formatName) => {
     const diff = genDiff(filepath1, filepath2, formatName.format);
