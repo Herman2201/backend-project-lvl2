@@ -31,7 +31,7 @@ const formatStylish = (obj) => {
   const iter = (currentValue, depth = 0) => {
     const [currentIndent, childrentIndent, bracketIndent] = getIndentSize(depth);
     const line = currentValue.map((key) => {
-      switch (key.status) {
+      switch (key.type) {
         case 'heir': {
           return `${currentIndent}${key.parent}: ${iter(
             key.children,
@@ -54,7 +54,7 @@ const formatStylish = (obj) => {
             key.key
           }: ${getChildren(key.value, depth)}`;
         default:
-          throw new Error(`Unknown this status '${key.status}'`);
+          throw new Error(`Unknown this type '${key.type}'`);
       }
     });
     return ['{', ...line, `${bracketIndent}}`].join('\n');

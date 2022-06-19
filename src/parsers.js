@@ -1,20 +1,17 @@
-import { readFile } from './utils.js';
 import yaml from 'js-yaml';
-import path from 'path';
 
-const parseFileData = (file) => {
-  const typeFile = path.extname(file);
-  switch (typeFile) {
-    case '.json':
-      return JSON.parse(readFile(file));
+const parsers = (dataFile, extname) => {
+  switch (extname) {
+    case 'json':
+      return JSON.parse(dataFile);
 
-    case '.yml':
-    case '.yaml':
-      return yaml.load(readFile(file));
+    case 'yml':
+    case 'yaml':
+      return yaml.load(dataFile);
 
     default:
-      throw new Error(`Invalid ${typeFile} format file`);
+      throw new Error(`Invalid ${extname} format file`);
   }
 };
 
-export default parseFileData;
+export default parsers;

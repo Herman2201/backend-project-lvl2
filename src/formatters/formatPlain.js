@@ -16,7 +16,7 @@ const formatPlain = (tree) => {
   const lines = (node, path = []) => node
     .filter((key) => !key.notChange)
     .map((key) => {
-      switch (key.status) {
+      switch (key.type) {
         case 'heir':
           return `${lines(key.children, [...path, key.parent])}`;
 
@@ -37,7 +37,7 @@ const formatPlain = (tree) => {
         case 'delete':
           return `Property '${createPath([...path, key.key])}' was removed`;
         default:
-          throw new Error(`Unknown this status '${key.status}'`);
+          throw new Error(`Unknown this type '${key.type}'`);
       }
     })
     .join('\n');
