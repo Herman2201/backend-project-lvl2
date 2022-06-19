@@ -6,20 +6,19 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const getFixturePath = (filename) =>
-  path.join(__dirname, '..', '__fixtures__', filename);
+const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 
 const expectStylish = readFileSync(
   path.join(path.resolve(), '__fixtures__', 'result_stylish.txt'),
-  'utf8'
+  'utf8',
 );
 const expectPlain = readFileSync(
   path.join(path.resolve(), '__fixtures__', 'result_plain.txt'),
-  'utf8'
+  'utf8',
 );
 const expectJSON = readFileSync(
   path.join(path.resolve(), '__fixtures__', 'result_json.txt'),
-  'utf8'
+  'utf8',
 );
 const styleStylish = 'stylish';
 const stylePlain = 'plain';
@@ -46,9 +45,7 @@ test.each([
   expect(() => genDiff(badExtname1, badExtname2)).toThrow();
 });
 test('error format', () => {
-  expect(() =>
-    genDiff('__fixtures__/file1.json', '__fixtures__/file2.json', 'stylih')
-  ).toThrow();
+  expect(() => genDiff('__fixtures__/file1.json', '__fixtures__/file2.json', 'stylih')).toThrow();
 });
 test.each([
   {
@@ -69,6 +66,8 @@ test.each([
     formatName: styleJSON,
     expected: expectJSON,
   },
-])('test diff files', ({ file1, file2, formatName, expected }) => {
+])('test diff files', ({
+  file1, file2, formatName, expected,
+}) => {
   expect(genDiff(file1, file2, formatName)).toBe(expected);
 });
