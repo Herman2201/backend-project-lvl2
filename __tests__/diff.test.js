@@ -66,7 +66,7 @@ test.each([
     formatName: styleJSON,
     expected: expectJSON,
   },
-])('test diff files', ({
+])('diff files', ({
   file1, file2, formatName, expected,
 }) => {
   expect(genDiff(file1, file2, formatName)).toBe(expected);
