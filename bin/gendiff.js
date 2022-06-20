@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import genDiff from '../src/index.js';
 import { program } from 'commander';
+import genDiff from '../src/index.js';
 
 program
   .version('1.0.0')
@@ -11,7 +11,7 @@ program
   .option(
     '-f, --format <type>',
     'output format [stylish, plain, json]',
-    'stylish'
+    'stylish',
   )
   .action((filepath1, filepath2, formatName) => {
     const diff = genDiff(filepath1, filepath2, formatName.format);

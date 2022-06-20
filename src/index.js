@@ -1,10 +1,10 @@
 // @ts-check
 
+import path from 'path';
 import parsers from './parsers.js';
 import diff from './diff.js';
 import formatter from './formatters/index.js';
 import { readFile } from './utils.js';
-import path from 'path';
 
 const genDiff = (file1, file2, format = 'stylish') => {
   const dataFile1 = readFile(file1);

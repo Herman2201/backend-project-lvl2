@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 const diff = (tree1, tree2) => {
   const keys = _.union(_.keys(tree1), _.keys(tree2));
-  const sortKey = keys.sort();
+  const sortKey = _.sortBy(keys);
   const diffKey = sortKey.map((key) => {
     if (!_.has(tree1, key)) {
       return {
