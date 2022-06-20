@@ -13,7 +13,6 @@ parserOptions:
   ecmaVersion: latest
 
 rules:
-  no-confusing-arrow: 0
   no-console: 0
   import/order: 0
   import/extensions:
