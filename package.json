@@ -4,7 +4,7 @@
   "description": "project",
   "main": "index.js",
   "bin": {
-    "gendiff": "bin/genDiff.js"
+    "gendiff": "bin/gendiff.js"
   },
   "simple-git-hooks": {
     "pre-push": "make lint"
