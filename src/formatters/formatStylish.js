@@ -20,7 +20,7 @@ const getChildren = (children, depth = 0) => {
   }
   const [childrentIndent, bracketIndent] = getIndentSize(depth, 'children');
   const keys = _.union(_.keys(children));
-  const sortKey = _.sort(keys);
+  const sortKey = _.sortBy(keys);
   const line = sortKey.map((value) => !_.isObject(children[value])
     ? `${childrentIndent}${value}: ${children[value]}`
     : `${childrentIndent}${value}: ${getChildren(children[value], depth + 1)}`);
