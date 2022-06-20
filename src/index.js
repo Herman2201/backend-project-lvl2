@@ -6,7 +6,7 @@ import formatter from './formatters/index.js';
 import { readFile } from './utils.js';
 import path from 'path';
 
-const genDiff = (file1, file2, format) => {
+const genDiff = (file1, file2, format = 'stylish') => {
   const dataFile1 = readFile(file1);
   const dataFile2 = readFile(file2);
   const extnameFile1 = path.extname(file1).slice(1);

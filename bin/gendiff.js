@@ -14,7 +14,6 @@ program
     'stylish'
   )
   .action((filepath1, filepath2, formatName) => {
-    console.log(formatName);
     const diff = genDiff(filepath1, filepath2, formatName.format);
     console.log(diff);
   })
