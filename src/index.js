@@ -2,7 +2,7 @@
 
 import parsers from './parsers.js';
 import diff from './diff.js';
-import getFormat from './formatters/index.js';
+import formatter from './formatters/index.js';
 import { readFile } from './utils.js';
 import path from 'path';
 
@@ -16,8 +16,7 @@ const genDiff = (file1, file2, format) => {
   const parsingFile2 = parsers(dataFile2, extnameFile2);
 
   const diffFile = diff(parsingFile1, parsingFile2);
-  const result = getFormat(format);
-  return result(diffFile);
+  return formatter(diffFile, format);
 };
 
 export default genDiff;
