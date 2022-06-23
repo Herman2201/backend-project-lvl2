@@ -1,5 +1,10 @@
 import _ from 'lodash';
-import { exchange } from './index.js';
+
+const exchange = {
+  add: '+',
+  delete: '-',
+  notChange: ' ',
+};
 
 const getIndentSize = (depth, node = 'parent') => {
   const space = ' ';
@@ -21,33 +26,30 @@ const getChildren = (children, depth = 0) => {
   const [childrentIndent, bracketIndent] = getIndentSize(depth, 'children');
   const keys = _.union(_.keys(children));
   const sortKey = _.sortBy(keys);
-  const line = sortKey.map((value) =>
-    !_.isObject(children[value])
-      ? `${childrentIndent}${value}: ${children[value]}`
-      : `${childrentIndent}${value}: ${getChildren(children[value], depth + 1)}`
-  );
+  const line = sortKey.map((value) => (!_.isObject(children[value])
+    ? `${childrentIndent}${value}: ${children[value]}`
+    : `${childrentIndent}${value}: ${getChildren(children[value], depth + 1)}`));
   return ['{', ...line, `${bracketIndent}}`].join('\n');
 };
 
 const formatStylish = (obj) => {
   const iter = (currentValue, depth = 0) => {
-    const [currentIndent, childrentIndent, bracketIndent] =
-      getIndentSize(depth);
+    const [currentIndent, childrentIndent, bracketIndent] = getIndentSize(depth);
     const line = currentValue.map((node) => {
       switch (node.type) {
         case 'nested': {
           return `${currentIndent}${node.parent}: ${iter(
             node.children,
-            depth + 1
+            depth + 1,
           )}`;
         }
         case 'replacement': {
           return `${childrentIndent}- ${node.key}: ${getChildren(
             node.value1,
-            depth
+            depth,
           )}\n${childrentIndent}+ ${node.key}: ${getChildren(
             node.value2,
-            depth
+            depth,
           )}`;
         }
         case 'notChange':

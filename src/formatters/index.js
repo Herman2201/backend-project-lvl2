@@ -1,10 +1,5 @@
 import formatStylish from './formatStylish.js';
 import formatPlain from './formatPlain.js';
-export const exchange = {
-  add: '+',
-  delete: '-',
-  notChange: ' ',
-};
 
 const formatter = (data, format) => {
   switch (format) {
