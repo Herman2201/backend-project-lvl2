@@ -1,0 +1,5 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/hermanuskalo/backend-project-lvl2'
+npm ci
+make: Leaving directory `/Users/hermanuskalo/backend-project-lvl2'
+ 

@@ -15,14 +15,13 @@ const diff = (tree1, tree2) => {
     if (!_.has(tree2, key)) {
       return {
         type: 'delete',
-        del: '-',
         key,
         value: tree1[key],
       };
     }
     if (_.isObject(tree1[key]) && _.isObject(tree2[key])) {
       return {
-        type: 'heir',
+        type: 'nested',
         parent: key,
         children: diff(tree1[key], tree2[key]),
       };
@@ -30,8 +29,6 @@ const diff = (tree1, tree2) => {
     if (!_.isEqual(tree1[key], tree2[key])) {
       return {
         type: 'replacement',
-        del: '-',
-        add: '+',
         key,
         value1: tree1[key],
         value2: tree2[key],
@@ -39,7 +36,6 @@ const diff = (tree1, tree2) => {
     }
     return {
       type: 'notChange',
-      notChange: ' ',
       key,
       value: tree1[key],
     };

@@ -13,34 +13,35 @@ const handlingValue = (val) => {
 };
 
 const formatPlain = (tree) => {
-  const lines = (node, path = []) => node
-    .filter((key) => !key.notChange)
-    .map((key) => {
-      switch (key.type) {
-        case 'heir':
-          return `${lines(key.children, [...path, key.parent])}`;
+  const lines = (node, path = []) =>
+    node
+      .filter((node) => node.type !== 'notChange')
+      .map((node) => {
+        switch (node.type) {
+          case 'nested':
+            return `${lines(node.children, [...path, node.parent])}`;
 
-        case 'replacement': {
-          const file1 = `Property '${createPath([
-            ...path,
-            key.key,
-          ])}' was updated. From ${handlingValue(key.value1)}`;
+          case 'replacement': {
+            const file1 = `Property '${createPath([
+              ...path,
+              node.key,
+            ])}' was updated. From ${handlingValue(node.value1)}`;
 
-          const file2 = `to ${handlingValue(key.value2)}`;
-          return `${file1} ${file2}`;
+            const file2 = `to ${handlingValue(node.value2)}`;
+            return `${file1} ${file2}`;
+          }
+          case 'add':
+            return `Property '${createPath([
+              ...path,
+              node.key,
+            ])}' was added with value: ${handlingValue(node.value)}`;
+          case 'delete':
+            return `Property '${createPath([...path, node.key])}' was removed`;
+          default:
+            throw new Error(`Unknown this type '${node.type}'`);
         }
-        case 'add':
-          return `Property '${createPath([
-            ...path,
-            key.key,
-          ])}' was added with value: ${handlingValue(key.value)}`;
-        case 'delete':
-          return `Property '${createPath([...path, key.key])}' was removed`;
-        default:
-          throw new Error(`Unknown this type '${key.type}'`);
-      }
-    })
-    .join('\n');
+      })
+      .join('\n');
   return lines(tree);
 };
 

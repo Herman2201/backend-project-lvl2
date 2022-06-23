@@ -1,10 +1,13 @@
 // @ts-check
 
 import path from 'path';
+import { readFileSync } from 'fs';
 import parsers from './parsers.js';
 import diff from './diff.js';
 import formatter from './formatters/index.js';
-import { readFile } from './utils.js';
+
+export const readFile = (filename) =>
+  readFileSync(path.resolve(filename), 'utf-8');
 
 const genDiff = (file1, file2, format = 'stylish') => {
   const dataFile1 = readFile(file1);

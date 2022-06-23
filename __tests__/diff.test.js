@@ -60,12 +60,12 @@ test.each([
     formatName: stylePlain,
     expected: expectPlain,
   },
-  {
-    file1: getFixturePath('file1.yml'),
-    file2: '__fixtures__/file2.yml',
-    formatName: styleJSON,
-    expected: expectJSON,
-  },
+  // {
+  //   file1: getFixturePath('file1.yml'),
+  //   file2: '__fixtures__/file2.yml',
+  //   formatName: styleJSON,
+  //   expected: expectJSON,
+  // },
 ])('diff files', ({
   file1, file2, formatName, expected,
 }) => {

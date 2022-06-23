@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { getExpected } from '../utils.js';
+import { exchange } from './index.js';
 
 const getIndentSize = (depth, node = 'parent') => {
   const space = ' ';
@@ -21,43 +21,43 @@ const getChildren = (children, depth = 0) => {
   const [childrentIndent, bracketIndent] = getIndentSize(depth, 'children');
   const keys = _.union(_.keys(children));
   const sortKey = _.sortBy(keys);
-  const line = sortKey.map((value) => (!_.isObject(children[value])
-    ? `${childrentIndent}${value}: ${children[value]}`
-    : `${childrentIndent}${value}: ${getChildren(
-      children[value],
-      depth + 1,
-    )}`));
+  const line = sortKey.map((value) =>
+    !_.isObject(children[value])
+      ? `${childrentIndent}${value}: ${children[value]}`
+      : `${childrentIndent}${value}: ${getChildren(children[value], depth + 1)}`
+  );
   return ['{', ...line, `${bracketIndent}}`].join('\n');
 };
 
 const formatStylish = (obj) => {
   const iter = (currentValue, depth = 0) => {
-    const [currentIndent, childrentIndent, bracketIndent] = getIndentSize(depth);
-    const line = currentValue.map((key) => {
-      switch (key.type) {
-        case 'heir': {
-          return `${currentIndent}${key.parent}: ${iter(
-            key.children,
-            depth + 1,
+    const [currentIndent, childrentIndent, bracketIndent] =
+      getIndentSize(depth);
+    const line = currentValue.map((node) => {
+      switch (node.type) {
+        case 'nested': {
+          return `${currentIndent}${node.parent}: ${iter(
+            node.children,
+            depth + 1
           )}`;
         }
         case 'replacement': {
-          return `${childrentIndent}${key.del} ${key.key}: ${getChildren(
-            key.value1,
-            depth,
-          )}\n${childrentIndent}${key.add} ${key.key}: ${getChildren(
-            key.value2,
-            depth,
+          return `${childrentIndent}- ${node.key}: ${getChildren(
+            node.value1,
+            depth
+          )}\n${childrentIndent}+ ${node.key}: ${getChildren(
+            node.value2,
+            depth
           )}`;
         }
         case 'notChange':
         case 'add':
         case 'delete':
-          return `${childrentIndent}${getExpected(key)} ${
-            key.key
-          }: ${getChildren(key.value, depth)}`;
+          return `${childrentIndent}${exchange[node.type]} ${
+            node.key
+          }: ${getChildren(node.value, depth)}`;
         default:
-          throw new Error(`Unknown this type '${key.type}'`);
+          throw new Error(`Unknown this type '${node.type}'`);
       }
     });
     return ['{', ...line, `${bracketIndent}}`].join('\n');
