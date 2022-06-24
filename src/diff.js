@@ -7,7 +7,6 @@ const diff = (tree1, tree2) => {
     if (!_.has(tree1, key)) {
       return {
         type: 'add',
-        add: '+',
         key,
         value: tree2[key],
       };

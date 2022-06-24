@@ -1,16 +1,16 @@
 import yaml from 'js-yaml';
 
-const parsers = (dataFile, extname) => {
-  switch (extname) {
+const parsers = (data, format) => {
+  switch (format) {
     case 'json':
-      return JSON.parse(dataFile);
+      return JSON.parse(data);
 
     case 'yml':
     case 'yaml':
-      return yaml.load(dataFile);
+      return yaml.load(data);
 
     default:
-      throw new Error(`Invalid ${extname} format file`);
+      throw new Error(`Invalid ${format} format file`);
   }
 };
 
